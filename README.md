@@ -19,4 +19,8 @@ Includes my final project and related scripts developed during the course.
 Tracks my learning progress in SQL as I explore optimal ways to combine SQL querying with Python for efficient data extraction and manipulation.  
 **File:** `SQL Progress`
 
+### 4. Selected Projects from Adalya Ltd.
+Includes `Cheat Sheet` script.
+
+
 
