@@ -7,7 +7,7 @@ This research project, conducted over the past three years, applies quantitative
 quotas, and prices from the Israeli Water Authority (IWA).
 
 **File:** `Thesis - Water Consumption Prediction`
- - `shafdan` presents my key findings in a more accessible format.
+ - `shafdan` presents my key findings in a more accessible format (Work in Progress)
  - The complete analysis is available in the `full script`.
  - The written thesis is also attached as pdf.
 
