@@ -11,16 +11,22 @@ quotas, and prices from the Israeli Water Authority (IWA).
  - The complete analysis is available in the `full script`.
  - The written thesis is also attached as pdf.
 
-### 2. Introduction to Data Science (Academic Course)
-Includes my final project and related scripts developed during the course.  
+### 2. Udemy (Work in Progress)
+Documenting my progress in various technical courses. Currently focused on SQL querying.
+
+**File:** `Udemy/MySQL Bootcamp`
+
+- 📘 The Ultimate MySQL Bootcamp: Go from SQL Beginner to Expert – Colt Steele
+  
+
+### 3. Introduction to Data Science (Academic Course)
+Includes my final project and related scripts developed during the course. 
+
 **File:** `71253 - Introduction to Data Science`
 
-### 3. SQL Practice and Integration (Work in Progress)
-Tracks my learning progress in SQL as I explore optimal ways to combine SQL querying with Python for efficient data extraction and manipulation.  
-**File:** `SQL Progress`
+### 4. Selected Projects from Adalya Ltd and Linkedin posts.
 
-### 4. Selected Projects from Adalya Ltd.
-Includes `Cheat Sheet` script.
+**File:** `Projects`
 
 
 
