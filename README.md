@@ -13,8 +13,10 @@ quotas, and prices from the Israeli Water Authority (IWA).
 
 ### 2. Udemy (Work in Progress)
 Documenting my progress in various technical courses. Currently focused on SQL querying.
-- 📘 The Ultimate MySQL Bootcamp: Go from SQL Beginner to Expert – Colt Steele
 **File:** `Udemy/MySQL Bootcamp`
+
+- 📘 The Ultimate MySQL Bootcamp: Go from SQL Beginner to Expert – Colt Steele
+  
 
 ### 3. Introduction to Data Science (Academic Course)
 Includes my final project and related scripts developed during the course.  
