@@ -145,8 +145,93 @@ FROM people;
 
 SELECT NOW() - INTERVAL 18 YEAR;
 
+SELECT 
+    name,
+    birthdate + INTERVAL 21 YEAR AS '21ST BIRTHDAY'
+FROM people;
 
 
+-- TIMESTAMPS: 'YYYY-MM-DD hh:mm:ss' 
+-- takes less memory but narrow range of times (from 1970 to 2038)
 
 
+SELECT NOW(); # THIS IS A TIMESTAMP 
+# TIMESTAMPDIFF | TIMESTAMP_ADD | SUB all the same
 
+
+-- ----------------------------------
+
+CREATE TABLE captions2 (
+    text VARCHAR(150),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);
+    
+INSERT INTO captions2(text)
+VALUES ('Just me chilin with my family');
+
+INSERT INTO captions2(text)
+VALUES ('I rock SQL!!');
+
+INSERT INTO captions2(text)
+VALUES ('easy AF');
+
+
+UPDATE captions2 SET text = 'very easy (Language!)'
+WHERE text = 'easy AF';
+
+SELECT * FROM captions2;
+
+-- --------------------------------------------------
+
+
+-- Exercise :
+
+#1. what is a good use for char or varchar
+
+-- CHAR good for tickers of countries and stocks where there's a few charecters, saving memory
+-- VARCHAR good for text that varies by length like names, adress etc
+
+#2. fiil the blanks types ( item_name__________, price___<1000000_____, quantity_______)
+
+-- item_name VARCHAR(100), price DECIMAL(7,2), quantity INT 
+
+#3. whats the diff between datetime and timestamp
+
+-- timestamp more efficient in terms of memory but has narrow range of time stamps.
+-- both look the same in terms of format
+
+#4. print out current time
+
+SELECT CURTIME();
+
+#5. print out current date
+
+SELECT CURDATE();
+
+#6. print out the current day of the week (name)
+
+SELECT DATE_FORMAT(CURDATE(), '%W');
+
+#7. print current day and time using those formats: 
+    # mm/dd/yyyy
+    
+# https://www.w3schools.com/mysql/func_mysql_date_format.asp
+    
+SELECT DATE_FORMAT(CURDATE(), '%d/%m/%Y');
+
+    # January 2nd at 3:15 (24 hours time)
+    
+SELECT DATE_FORMAT(NOW(), '%M %D at %k:%i');
+
+#8. create table tweets (180char), user_name, created_time
+
+CREATE TABLE tweets (
+    text VARCHAR(180),
+    user_name VARCHAR(30),
+    created_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+    
+INSERT INTO tweets (text, user_name) VALUES('this is my first tweet', 'coltscat');
+SELECT * FROM tweets;
+ 
+INSERT INTO tweets (text, user_name) VALUES('this is my second tweet', 'coltscat');
+SELECT * FROM tweets;
