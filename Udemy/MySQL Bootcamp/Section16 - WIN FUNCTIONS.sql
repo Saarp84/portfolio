@@ -37,4 +37,41 @@ AVG(salary) OVER() #Calculte and give on the side of each row
 FROM employees;
 
 
+SELECT department,
+AVG(salary) OVER() AS total_avg,
+AVG(salary) OVER(PARTITION BY department) AS department_avg #Calculte by... and give on the side of each row
+FROM employees;
+
+-- ORDER BY INSIDE OVER
+
+SELECT department,salary,
+SUM(salary) OVER(PARTITION BY department ORDER BY salary)
+FROM employees;
+
+-- RANK() 
+# ranking columns of salary by the greatest to the lowest
+SELECT emp_no,department, salary,
+RANK() OVER(ORDER BY salary DESC) AS overall_rank
+FROM employees;
+
+SELECT emp_no,department, salary,
+RANK() OVER(PARTITION BY department ORDER BY salary DESC) AS overall_rank
+FROM employees;
+
+-- ROW_NUMBER() AND DENSE_RANK()
+
+SELECT 
+    emp_no, 
+    department, 
+    salary,
+    ROW_NUMBER() OVER(ORDER BY salary DESC) as overall_num,
+    ROW_NUMBER() OVER(PARTITION BY department ORDER BY SALARY DESC) as dept_row_number,
+    
+    RANK() OVER(PARTITION BY department ORDER BY SALARY DESC) as dept_salary_rank,
+    
+    RANK() OVER(ORDER BY salary DESC) as overall_rank,
+    DENSE_RANK() OVER(ORDER BY salary DESC) as overall_dense_rank
+    
+FROM employees ORDER BY overall_rank;
+
 
