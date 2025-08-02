@@ -75,3 +75,35 @@ SELECT
 FROM employees ORDER BY overall_rank;
 
 
+-- NTILE(); 
+
+SELECT 
+    emp_no,
+    department,
+    salary,
+    NTILE(4) OVER(ORDER BY salary DESC) AS salary_quartile,
+    NTILE(4) OVER(PARTITION BY department ORDER BY salary DESC) AS salary_quartile_per_dpt
+FROM employees;
+
+-- FIRST_VALUE
+
+SELECT
+    emp_no,
+    department,
+    salary,
+    FIRST_VALUE(emp_no) OVER(PARTITION BY department ORDER BY salary DESC) AS highest_payed_per_dept
+FROM employees;
+
+
+-- LEAD & LAG - interperting by next or previous row in order
+
+SELECT
+    salary,
+    LAG(salary) OVER(ORDER BY salary DESC) AS prev_salary,
+    salary - LEAD(salary) OVER(ORDER BY salary DESC) AS gap_from_lower,
+    LEAD(salary) OVER(ORDER BY salary DESC) AS lower_salary,
+    LEAD(salary,2) OVER(ORDER BY salary DESC) AS lower_salary_2rows
+
+FROM employees;
+
+
