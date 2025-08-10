@@ -41,10 +41,47 @@ ORDER BY total_likes DESC
 LIMIT 1;
 
 # CHALLENGE 5 #
-# Q:
+# Q: How many times does average user post?
+SELECT 
+    ROUND(AVG(total_photos),2) AS 'Average Number of Posts' 
+FROM(SELECT 
+        username,
+        COUNT(image_url) AS total_photos
+    FROM users
+    LEFT JOIN photos ON users.id=photos.user_id
+    GROUP BY users.id) AS sub;
+
+## OR
+SELECT (
+    SELECT COUNT(*) FROM photos) / (SELECT COUNT(*) FROM users) AS 'Average Number of Posts';
 
 # CHALLENGE 6 #
-# Q:
+# Q: What are the top 5 most commonly used hashtags?
+SELECT tag_name, COUNT(*) AS tags_count
+FROM photo_tags
+LEFT JOIN tags ON tags.id = photo_tags.tag_id
+GROUP BY tag_id
+ORDER BY tags_count DESC
+limit 5;
+
 
 # CHALLENGE 7 #
-# Q:
+# Q: Find users have liked every single photo on the site
+SELECT 
+    username AS 'Those who liked all the photos' 
+FROM(SELECT 
+        username, 
+        COUNT(*) * 1.0 / (SELECT COUNT(*) FROM photos) AS likes_rate
+    FROM likes
+    JOIN users ON users.id = likes.user_id
+    GROUP BY user_id) AS sub
+WHERE likes_rate=1;
+
+## OR
+SELECT username,
+       Count(*) AS num_likes 
+FROM   users 
+       INNER JOIN likes 
+               ON users.id = likes.user_id 
+GROUP  BY likes.user_id 
+HAVING num_likes = (SELECT Count(*) FROM   photos); 
