@@ -106,3 +106,7 @@ CREATE TABLE photo_tags(
 );
 
 
+# Getting Data inside:
+
+
+
