@@ -3,8 +3,7 @@
 
 -- Task 1 — Find the top 5 users who received the most total likes on all their photos:
 
-WITH photos_likes AS (
-## First CTE: calculate the number of likes for each photo.
+WITH photos_likes AS (## First CTE: calculate the number of likes for each photo.
     SELECT 
         p.user_id,
         p.image_url,
@@ -14,17 +13,17 @@ WITH photos_likes AS (
         ON p.id = l.photo_id
     GROUP BY p.user_id, p.image_url
     ORDER BY p.user_id, likes_count 
-), likes_per_user AS(
-## Second CTE: sum likes per user.
-SELECT 
-    u.username,
-    COUNT(p.image_url) AS photos_count,
-    SUM(p.likes_count) AS total_likes
-FROM photos_likes p 
-JOIN users u 
-    ON u.id = p.user_id
-GROUP BY u.username
-)
+    ), likes_per_user AS( ## Second CTE: sum likes per user and the avarage per photo
+        SELECT 
+            u.username,
+            SUM(p.likes_count) AS total_likes,
+            ROUND(SUM(p.likes_count) / COUNT(p.image_url), 1) AS avg_likes_per_photo,
+            COUNT(p.image_url) AS photos_count
+        FROM photos_likes p 
+        JOIN users u 
+            ON u.id = p.user_id
+        GROUP BY u.username
+        )
 ## Final step: sort and return the top 5.
 SELECT * FROM likes_per_user
 ORDER BY total_likes DESC
@@ -37,6 +36,43 @@ LIMIT 5;
 ## First CTE: find all users with at least one uploaded photo.
 ## Second CTE: count them and compare with the total number of users.
 
+WITH photo_count AS(# Common Table Expression for uploaders table
+    SELECT 
+        u.username,
+        COUNT(p.image_url) AS photos_uplaoded
+    FROM photos p
+    JOIN users u 
+        ON u.id = p.user_id
+    GROUP BY u.username
+    ), 
+    uploader_count AS(# Common Table Expression for counting the uploaders
+    SELECT 
+        COUNT(DISTINCT(username)) AS uploaders
+    FROM photo_count
+    ),
+    user_count AS (# Common Table Expression for counting the users
+        SELECT COUNT(*) AS total_users
+        FROM users
+    )
+SELECT 
+    CAST(u.uploaders AS FLOAT) / uc.total_users AS "Percent of uploaders"
+FROM uploader_count u, user_count uc;
+
+
+
+
+WITH photo_count AS(# Common Table Expression for uploaders table if uploaded more than 10 photos
+    SELECT 
+        u.username,
+        COUNT(p.image_url) AS photos_uplaoded
+    FROM photos p
+    JOIN users u 
+        ON u.id = p.user_id
+    GROUP BY u.username
+    HAVING COUNT(p.image_url)>10
+    )
+    SELECT * FROM photo_count
+    
 
 
 
