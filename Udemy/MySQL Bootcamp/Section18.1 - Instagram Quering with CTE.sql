@@ -74,18 +74,51 @@ WITH photo_count AS(# Common Table Expression for uploaders table if uploaded mo
 
 -- Task 3 — Find all photos that received more likes than the global site average:
 
-## First CTE: calculate the average likes per photo (site-wide).
-## Second CTE: calculate the number of likes for each photo.
-## Final step: filter only those above the average.
+
+WITH likes_count AS(## First CTE: likes count
+    SELECT 
+        p.image_url,
+        COUNT(*) AS likes
+    FROM likes l 
+    JOIN photos p ON l.photo_id=p.id
+    GROUP BY p.image_url
+    ), 
+    avg_likes AS (## Second CTE: average
+        SELECT AVG(likes) AS avg_likes
+        FROM likes_count
+    )
+    SELECT 
+        l.image_url,
+        l.likes
+    FROM likes_count l, avg_likes a
+    WHERE likes > a.avg_likes
+    ORDER BY likes DESC;
 
 
 
 
 
--- Task 4 — Find the top 5 users who liked the most photos belonging to other users (not their own):
+-- Task 4 — Find the top 15 users who liked the most photos belonging to other users (not their own):
 
-## First CTE: all likes given, after filtering out self-likes.
-## Second CTE: sum likes per “liker” user.
+## First CTE: counting likes given to others by each user
+WITH counting_given_likes AS(
+        SELECT l.user_id,
+                COUNT(*) AS likes_given_to_other
+        FROM likes l
+        JOIN photos p ON p.id = l.photo_id
+        WHERE l.user_id != p.user_id
+        GROUP BY l.user_id
+    )
+    
+    SELECT 
+        u.username,
+        c.likes_given_to_other 
+    FROM counting_given_likes c
+    JOIN users u ON u.id = c.user_id
+    ORDER BY likes_given_to_other DESC
+    LIMIT 15
+;
+
 
 
 
