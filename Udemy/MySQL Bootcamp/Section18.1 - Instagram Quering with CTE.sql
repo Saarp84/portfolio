@@ -59,8 +59,6 @@ SELECT
 FROM uploader_count u, user_count uc;
 
 
-
-
 WITH photo_count AS(# Common Table Expression for uploaders table if uploaded more than 10 photos
     SELECT 
         u.username,
@@ -73,8 +71,6 @@ WITH photo_count AS(# Common Table Expression for uploaders table if uploaded mo
     )
     SELECT * FROM photo_count
     
-
-
 
 -- Task 3 — Find all photos that received more likes than the global site average:
 
