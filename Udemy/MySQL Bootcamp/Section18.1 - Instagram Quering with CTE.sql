@@ -164,11 +164,69 @@ WITH users_photos_tags AS (
 ## Second CTE: number of likes per photo.
 ## Final step: compute likes / total_users and sort.
 
+WITH users_count AS(
+    SELECT 
+        COUNT(*) AS total_users
+    FROM users
+),
+likes_per_photo AS(
+    SELECT 
+        photo_id,
+        COUNT(*) AS total_likes
+    FROM likes
+    GROUP BY photo_id
+)
+
+SELECT 
+    p.id AS photo_id,
+    p.image_url,
+    -- lpp.total_likes,
+    -- uc.total_users,
+    ROUND((CAST(lpp.total_likes AS FLOAT) / uc.total_users),2) AS like_rate
+    -- CAST turnning type to be floated "caculated number" 
+FROM likes_per_photo lpp
+CROSS JOIN users_count uc
+-- CROSS JOIN - "concating" columns - same value to each row
+JOIN photos p 
+    ON p.id = lpp.photo_id
+ORDER BY like_rate DESC
+LIMIT 3;
+
 
 -- Task 7 — Find the pair of users who share the most tags in their photos:
 
 ## First CTE: list of (user_id, tag_id) for all photos, joined with tags.
 ## Second CTE: self-join on tag_id and count how many shared tags each pair has.
+
+
+WITH users_tags AS(
+    SELECT 
+        p.user_id,
+        pt.tag_id
+    FROM photo_tags pt
+    JOIN photos p
+        ON p.id = pt.photo_id
+),
+paired_share AS(
+    SELECT 
+        ut1.user_id    AS user_a,
+        ut2.user_id    AS user_b,
+        ut1.tag_id     AS shared_tag
+    FROM users_tags ut1
+    JOIN users_tags ut2
+        ON ut1.tag_id = ut2.tag_id
+        AND ut1.user_id < ut2.user_id
+)
+
+SELECT 
+    user_a,
+    user_b,
+    COUNT(*) AS total_shared_tags
+FROM paired_share
+GROUP BY user_a,user_b
+ORDER BY total_shared_tags DESC
+LIMIT 1;
+
 
 
 -- Task 8 — Find all users who have at least one photo with zero likes:
