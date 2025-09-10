@@ -234,3 +234,20 @@ LIMIT 1;
 ## First CTE: all photos with their like counts.
 ## Second CTE: filter for photos with 0 likes and return distinct users.
 
+
+SELECT p.image_url,
+        COUNT(*) AS likes
+FROM photos p
+RIGHT JOIN likes l
+    ON p.id = l.photo_id
+GROUP BY photo_id
+HAVING likes<30;
+
+
+
+
+
+
+
+
+
