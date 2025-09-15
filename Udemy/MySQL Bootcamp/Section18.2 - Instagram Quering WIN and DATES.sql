@@ -53,7 +53,12 @@ LIMIT 5;
 
 -- Task 4 — For each user, show their signup date and their rank compared to all users created on the same day.
 
-
+SELECT 
+    username,
+    created_at,
+    DATE_FORMAT(created_at, '%a') AS signup_day_of_week,
+    RANK() OVER(PARTITION BY DATE_FORMAT(created_at, '%w') ORDER BY created_at) AS signup_rank
+FROM users;
 
 
 -- Task 5 — Show the average number of daily signups per month, and rank the months by this average.
