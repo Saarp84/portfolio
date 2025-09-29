@@ -64,6 +64,28 @@ FROM users;
 -- Task 5 — Show the average number of daily signups per month, and rank the months by this average.
 
 
+WITH users_sdate AS(
+    SELECT 
+        username,
+        DATE_FORMAT(created_at, '%d/%m') AS signup_dm
+    FROM users
+),
+total_signups_per_dm AS(
+    SELECT 
+        signup_dm,
+        COUNT(*) AS total_signups
+    FROM users_sdate
+    GROUP BY signup_dm
+    ORDER BY signup_dm
+) 
+SELECT 
+    CAST(RIGHT(signup_dm, 2) AS UNSIGNED) AS signup_m,
+    AVG(total_signups) AS daily_signup_avg,
+    RANK() OVER(ORDER BY AVG(total_signups) DESC) AS daily_avg_signups_rank
+FROM total_signups_per_dm
+GROUP BY signup_m
+ORDER BY daily_avg_signups_rank
+;
 
 
 -- Task 6 — For each user, show how many users signed up before them and how many after them.
