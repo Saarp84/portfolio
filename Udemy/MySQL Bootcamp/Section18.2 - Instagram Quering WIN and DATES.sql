@@ -90,6 +90,19 @@ ORDER BY daily_avg_signups_rank
 
 -- Task 6 — For each user, show how many users signed up before them and how many after them.
 
+WITH ranking_signups AS(
+    SELECT 
+        username,
+        created_at,
+        ROW_NUMBER() OVER(ORDER BY created_at, id) AS signup_order_rank,
+        COUNT(*) OVER() AS total
+    FROM users
+)
+SELECT 
+    username,
+    signup_order_rank - 1 AS signups_before,
+    total - signup_order_rank AS signups_after
+FROM ranking_signups;
 
 
 
