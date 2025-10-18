@@ -108,7 +108,35 @@ FROM ranking_signups;
 
 -- Task 7 — Find, for each month, the user who signed up first and the user who signed up last.
 
+WITH users_month_ranking AS(
+SELECT 
+    username,
+    DATE_FORMAT(created_at, '%M') AS signing_month,
+    created_at,
+    ROW_NUMBER() OVER(PARTITION BY DATE_FORMAT(created_at, '%M') ORDER BY created_at) AS month_ranking
+FROM users
+ORDER BY signing_month,created_at),
+monht_first_last_rank AS(
+SELECT 
+    signing_month,
+    MIN(month_ranking) AS first_sign,
+    MAX(month_ranking) AS last_sign
+FROM users_month_ranking
+GROUP BY signing_month)
 
+SELECT 
+    f.signing_month,
+    u1.username AS first_user,
+    -- u1.created_at AS first_signup_date,
+    u2.username AS last_user
+    -- u2.created_at AS last_signup_date
+FROM monht_first_last_rank f
+JOIN users_month_ranking u1 
+    ON f.signing_month = u1.signing_month AND f.first_sign = u1.month_ranking
+JOIN users_month_ranking u2 
+    ON f.signing_month = u2.signing_month AND f.last_sign = u2.month_ranking
+ORDER BY FIELD(f.signing_month, 'January','February','March','April','May','June','July','August','September','October','November','December');
+;
 
 
 -- Task 8 — Create quartiles of users by signup date, and return how many users fall into each quartile.
